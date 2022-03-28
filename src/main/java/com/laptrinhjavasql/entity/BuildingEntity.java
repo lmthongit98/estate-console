@@ -4,6 +4,7 @@ public class BuildingEntity {
 	String name;
 	Integer floorArea;
 	Integer numberOfBasement;
+	String types;
 
 	public String getName() {
 		return name;
@@ -27,6 +28,14 @@ public class BuildingEntity {
 
 	public void setNumberOfBasement(Integer numberOfBasement) {
 		this.numberOfBasement = numberOfBasement;
+	}
+
+	public String getTypes() {
+		return types;
+	}
+
+	public void setTypes(String types) {
+		this.types = types;
 	}
 
 }

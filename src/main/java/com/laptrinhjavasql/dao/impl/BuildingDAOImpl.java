@@ -19,14 +19,11 @@ public class BuildingDAOImpl implements BuildingDAO {
 	public List<BuildingEntity> searchBuilding(String name, Integer numberOfBasement, Integer floorArea,
 			List<String> types) {
 		StringBuilder finalQuery = new StringBuilder(
-				"SELECT distinct b.name, b.floorarea, b.numberofbasement from building b");
+				"SELECT distinct b.name, b.floorarea, b.numberofbasement, b.types from building b");
 		StringBuilder joinQuery = new StringBuilder();
 		StringBuilder whereQuery = new StringBuilder(SystemContant.WHERE_TRUE);
 
-		buildQueryWithJoin(types, joinQuery, whereQuery);
-
-		buildQueryWithoutJoin(name, numberOfBasement, floorArea, whereQuery);
-
+		buildQueryWithoutJoin(name, numberOfBasement, floorArea, types, whereQuery);
 		finalQuery.append(joinQuery).append(whereQuery);
 
 		List<BuildingEntity> results = new ArrayList<BuildingEntity>();
@@ -38,6 +35,7 @@ public class BuildingDAOImpl implements BuildingDAO {
 				entity.setName(rs.getString("name"));
 				entity.setFloorArea(rs.getInt("floorarea"));
 				entity.setNumberOfBasement(rs.getInt("numberofbasement"));
+				entity.setTypes(rs.getString("types"));
 				results.add(entity);
 			}
 
@@ -49,7 +47,7 @@ public class BuildingDAOImpl implements BuildingDAO {
 	}
 
 	private void buildQueryWithoutJoin(String name, Integer numberOfBasement, Integer floorArea,
-			StringBuilder whereQuery) {
+			List<String> types, StringBuilder whereQuery) {
 		if (ValidateUtil.isNotBlank(name)) {
 			whereQuery.append(" AND b.name like '%").append(name).append("%'");
 		}
@@ -61,16 +59,10 @@ public class BuildingDAOImpl implements BuildingDAO {
 		if (ValidateUtil.isNotBlank(numberOfBasement)) {
 			whereQuery.append(" AND b.numberofbasement = ").append(numberOfBasement);
 		}
-	}
-
-	private void buildQueryWithJoin(List<String> types, StringBuilder joinQuery, StringBuilder whereQuery) {
-		if (ValidateUtil.isNotBlank(types)) {
-			joinQuery.append(" INNER JOIN buildingrenttype ON b.id = buildingrenttype.buildingid")
-					.append(" INNER JOIN renttype ON buildingrenttype.renttypeid = renttype.id");
-
+		
+		if(ValidateUtil.isNotBlank(types)) {
 			List<String> conditions = new ArrayList<String>();
-			types.forEach(type -> conditions.add("renttype.code = '" + type + "'"));
-
+			types.forEach(type -> conditions.add("b.types like '%" + type + "%'"));
 			whereQuery.append(" AND (").append(String.join(" OR ", conditions)).append(")");
 		}
 	}

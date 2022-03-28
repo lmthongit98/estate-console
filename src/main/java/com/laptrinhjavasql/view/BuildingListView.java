@@ -32,6 +32,7 @@ public class BuildingListView {
 			System.out.println("Name: " + building.getName());
 			System.out.println("Floor area: " + building.getFloorArea());
 			System.out.println("Number of basement: " + building.getNumberOfBasement());
+			System.out.println("Types: " + building.getTypes());
 			System.out.println("-----------------------------------------------------");
 		});
 		
