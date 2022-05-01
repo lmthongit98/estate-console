@@ -13,8 +13,13 @@ public class BuildingController {
 	public BuildingController() {
 		service = new BuildingServiceImpl();
 	}
-
-	public List<BuildingModel> searchBuilding(String name, int numberOfBasement, int floorArea, List<String> types) {
-		return service.searchBuilding(name, numberOfBasement, floorArea, types);
+	
+	public List<BuildingModel> findAll() {
+		return service.findAll();
 	}
+	
+
+//	public List<BuildingModel> searchBuilding(String name, int numberOfBasement, int floorArea, List<String> types) {
+//		return service.searchBuilding(name, numberOfBasement, floorArea, types);
+//	}
 }

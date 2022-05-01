@@ -1,9 +1,23 @@
 package com.laptrinhjavasql.entity;
 
+import com.laptrinhjavasql.anotation.Column;
+import com.laptrinhjavasql.anotation.Entity;
+import com.laptrinhjavasql.anotation.Table;
+
+@Entity
+@Table(name = "building")
 public class BuildingEntity {
+	
+	@Column(name = "name")
 	String name;
+	
+	@Column(name = "floorarea")
 	Integer floorArea;
+	
+	@Column(name = "numberofbasement")
 	Integer numberOfBasement;
+	
+	@Column(name = "types")
 	String types;
 
 	public String getName() {
