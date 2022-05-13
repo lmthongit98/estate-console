@@ -38,4 +38,10 @@ public class BuildingModel {
 		this.types = types;
 	}
 
+	@Override
+	public String toString() {
+		return "BuildingModel [name=" + name + ", floorArea=" + floorArea + ", numberOfBasement=" + numberOfBasement
+				+ ", types=" + types + "]";
+	}
+
 }

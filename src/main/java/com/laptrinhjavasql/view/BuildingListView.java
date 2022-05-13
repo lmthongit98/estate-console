@@ -28,15 +28,15 @@ public class BuildingListView {
 		
 		List<BuildingModel> buildings = controller.findAll();
 		
-//		List<BuildingModel> buildings = controller.searchBuilding(name, numberOfBasement, floorArea, typeList);
+//		buildings = controller.searchBuilding(name, numberOfBasement, floorArea, typeList);
+		Long id = (long) 1;
+	    BuildingModel building = controller.findById(id);
+	    System.out.println(building);
 		
-		buildings.forEach(building -> {
-			System.out.println("Name: " + building.getName());
-			System.out.println("Floor area: " + building.getFloorArea());
-			System.out.println("Number of basement: " + building.getNumberOfBasement());
-			System.out.println("Types: " + building.getTypes());
-			System.out.println("-----------------------------------------------------");
-		});
+//		buildings.forEach(building -> {
+//			System.out.println(building);
+//			System.out.println("-----------------------------------------------------");
+//		});
 		
 	}
 }

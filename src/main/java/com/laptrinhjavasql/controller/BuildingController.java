@@ -19,7 +19,12 @@ public class BuildingController {
 	}
 	
 
-//	public List<BuildingModel> searchBuilding(String name, int numberOfBasement, int floorArea, List<String> types) {
-//		return service.searchBuilding(name, numberOfBasement, floorArea, types);
-//	}
+	public List<BuildingModel> searchBuilding(String name, int numberOfBasement, int floorArea, List<String> types) {
+		return service.searchBuilding(name, numberOfBasement, floorArea, types);
+	}
+	
+	public BuildingModel findById(Long id) {
+		return service.findById(id);
+	}
+	
 }

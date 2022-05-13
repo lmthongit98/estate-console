@@ -35,17 +35,23 @@ public class BuildingServiceImpl implements BuildingService {
 	}
 
 
-//	@Override
-//	public List<BuildingModel> searchBuilding(String name, Integer numberOfBasemnet, Integer floorArea, List<String> types) {
-//		List<BuildingEntity> entities = buildingRepository.searchBuilding(name, numberOfBasemnet, floorArea, types);
-//		List<BuildingModel> models = new ArrayList<BuildingModel>();
-//		
-//		entities.forEach(entity -> {
-//			BuildingModel model = converter.covertToModelFromEntity(entity);
-//			models.add(model);
-//		});
-//		
-//		return models;
-//	}
+	@Override
+	public List<BuildingModel> searchBuilding(String name, Integer numberOfBasemnet, Integer floorArea, List<String> types) {
+		List<BuildingEntity> entities = buildingRepository.searchBuilding(name, numberOfBasemnet, floorArea, types);
+		List<BuildingModel> models = new ArrayList<BuildingModel>();
+		
+		entities.forEach(entity -> {
+			BuildingModel model = converter.covertToModelFromEntity(entity);
+			models.add(model);
+		});
+		
+		return models;
+	}
+
+	@Override
+	public BuildingModel findById(Long id) {
+		BuildingEntity entity = buildingRepository.findById(id);
+		return converter.covertToModelFromEntity(entity);
+	}
 
 }
