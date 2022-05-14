@@ -8,9 +8,6 @@ import com.laptrinhjavasql.anotation.Table;
 @Table(name = "building")
 public class BuildingEntity extends BaseEntity {
 	
-	@Column(name = "id")
-	private Long id;
-	
 	@Column(name = "name")
 	String name;
 	
@@ -53,14 +50,6 @@ public class BuildingEntity extends BaseEntity {
 
 	public void setTypes(String types) {
 		this.types = types;
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
 	}
 
 }

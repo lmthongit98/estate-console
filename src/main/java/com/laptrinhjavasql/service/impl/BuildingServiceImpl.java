@@ -54,4 +54,9 @@ public class BuildingServiceImpl implements BuildingService {
 		return converter.covertToModelFromEntity(entity);
 	}
 
+	@Override
+	public Long add(BuildingEntity buildingEntity) {
+		return buildingRepository.insert(buildingEntity);
+	}
+
 }

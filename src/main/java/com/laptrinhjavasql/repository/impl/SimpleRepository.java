@@ -1,13 +1,16 @@
 package com.laptrinhjavasql.repository.impl;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.laptrinhjavasql.anotation.Column;
 import com.laptrinhjavasql.anotation.Entity;
 import com.laptrinhjavasql.anotation.Table;
 import com.laptrinhjavasql.mapper.ResultSetMapper;
@@ -26,16 +29,15 @@ public class SimpleRepository<T> implements JpaRepository<T> {
 
 	@Override
 	public List<T> findAll() {
+		String tableName = getTableName();
+		if (tableName == null) {
+			return null;
+		}
+
 		List<T> results = new ArrayList<>();
 		Connection conn = null;
-		String tableName = null;
 		Statement stmt = null;
 		ResultSet rs = null;
-
-		if (tClass.isAnnotationPresent(Entity.class) && tClass.isAnnotationPresent(Table.class)) {
-			Table table = tClass.getAnnotation(Table.class);
-			tableName = table.name();
-		}
 
 		try {
 			conn = ConnectionUtil.getConnection();
@@ -56,17 +58,15 @@ public class SimpleRepository<T> implements JpaRepository<T> {
 
 	@Override
 	public T findById(Long id) {
+		String tableName = getTableName();
+		if (tableName == null) {
+			return null;
+		}
 
 		List<T> results = new ArrayList<>();
 		Connection conn = null;
-		String tableName = null;
 		Statement stmt = null;
 		ResultSet rs = null;
-
-		if (tClass.isAnnotationPresent(Entity.class) && tClass.isAnnotationPresent(Table.class)) {
-			Table table = tClass.getAnnotation(Table.class);
-			tableName = table.name();
-		}
 
 		try {
 			conn = ConnectionUtil.getConnection();
@@ -106,6 +106,82 @@ public class SimpleRepository<T> implements JpaRepository<T> {
 			closeConnection(conn, stmt, rs);
 		}
 
+		return null;
+	}
+
+	@Override
+	public Long insert(Object object) {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		try {
+			conn = ConnectionUtil.getConnection();
+			StringBuilder sql = createSqlInsert();
+			pstmt = conn.prepareStatement(sql.toString(), Statement.RETURN_GENERATED_KEYS);
+
+			Class<?> zClass = object.getClass();
+			Field[] fields = zClass.getDeclaredFields();
+			int paramIndex = 1;
+			for (Field field : fields) {
+				field.setAccessible(true);
+				pstmt.setObject(paramIndex++, field.get(object));
+			}
+			// chua xu ly parent
+			int flag = pstmt.executeUpdate();
+			if (flag > 0) {
+				rs = pstmt.getGeneratedKeys();
+				return rs.next() ? rs.getLong(1) : null;
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		} finally {
+			closeConnection(conn, pstmt, rs);
+		}
+
+		return null;
+	}
+
+	private StringBuilder createSqlInsert() {
+		String tableName = getTableName();
+		if (tableName == null) {
+			return null;
+		}
+
+		StringBuilder fields = new StringBuilder("");
+		StringBuilder params = new StringBuilder("");
+
+		for (Field field : tClass.getDeclaredFields()) {
+			if (!field.isAnnotationPresent(Column.class))
+				continue;
+
+			if (fields.length() > 1) {
+				fields.append(", ");
+				params.append(", ");
+			}
+
+			Column column = field.getAnnotation(Column.class);
+			fields.append(column.name());
+			params.append("?");
+
+		}
+
+		StringBuilder result = new StringBuilder(
+				"INSERT INTO " + tableName + "(" + fields.toString() + ") VALUES(" + params.toString() + ")");
+
+		return result;
+	}
+
+	private String getTableName() {
+		if (tClass.isAnnotationPresent(Entity.class) && tClass.isAnnotationPresent(Table.class)) {
+			Table table = tClass.getAnnotation(Table.class);
+			return table.name();
+		}
 		return null;
 	}
 

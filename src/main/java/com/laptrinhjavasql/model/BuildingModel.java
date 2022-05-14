@@ -1,10 +1,11 @@
 package com.laptrinhjavasql.model;
 
 public class BuildingModel {
-	String name;
-	Integer floorArea;
-	Integer numberOfBasement;
-	String types;
+	private Long id;
+	private String name;
+	private Integer floorArea;
+	private Integer numberOfBasement;
+	private String types;
 
 	public String getName() {
 		return name;
@@ -38,10 +39,18 @@ public class BuildingModel {
 		this.types = types;
 	}
 
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
 	@Override
 	public String toString() {
-		return "BuildingModel [name=" + name + ", floorArea=" + floorArea + ", numberOfBasement=" + numberOfBasement
-				+ ", types=" + types + "]";
+		return "BuildingModel [id=" + id + ", name=" + name + ", floorArea=" + floorArea + ", numberOfBasement="
+				+ numberOfBasement + ", types=" + types + "]";
 	}
 
 }

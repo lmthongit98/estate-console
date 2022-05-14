@@ -2,6 +2,7 @@ package com.laptrinhjavasql.controller;
 
 import java.util.List;
 
+import com.laptrinhjavasql.entity.BuildingEntity;
 import com.laptrinhjavasql.model.BuildingModel;
 import com.laptrinhjavasql.service.BuildingService;
 import com.laptrinhjavasql.service.impl.BuildingServiceImpl;
@@ -25,6 +26,10 @@ public class BuildingController {
 	
 	public BuildingModel findById(Long id) {
 		return service.findById(id);
+	}
+
+	public Long add(BuildingEntity buildingEntity) {
+		return service.add(buildingEntity);
 	}
 	
 }
