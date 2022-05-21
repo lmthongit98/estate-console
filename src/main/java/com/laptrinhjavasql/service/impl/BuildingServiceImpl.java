@@ -36,8 +36,8 @@ public class BuildingServiceImpl implements BuildingService {
 
 
 	@Override
-	public List<BuildingModel> searchBuilding(String name, Integer numberOfBasemnet, Integer floorArea, List<String> types) {
-		List<BuildingEntity> entities = buildingRepository.searchBuilding(name, numberOfBasemnet, floorArea, types);
+	public List<BuildingModel> findByCondition(String name, Integer numberOfBasemnet, Integer floorArea, List<String> types) {
+		List<BuildingEntity> entities = buildingRepository.search(name, numberOfBasemnet, floorArea, types);
 		List<BuildingModel> models = new ArrayList<BuildingModel>();
 		
 		entities.forEach(entity -> {
@@ -62,6 +62,11 @@ public class BuildingServiceImpl implements BuildingService {
 	@Override
 	public void delete(Long id) {
 		buildingRepository.delete(id);
+	}
+
+	@Override
+	public void update(BuildingEntity buildingEntity) {
+		buildingRepository.update(buildingEntity);
 	}
 
 }

@@ -13,23 +13,29 @@ public class Main {
 			try {
 				functionID = Integer.parseInt(sc.nextLine());
 				switch (functionID) {
-				case 1:
-					BuildingView.add(sc);
-					break;
-				case 2:
-					BuildingView.findAll();
-					break;
-				case 3:
-					BuildingView.findById(sc);
-					break;
-				case 4:
-					BuildingView.deleteById(sc);
-					break;
+					case 1:
+						BuildingView.add(sc);
+						break;
+					case 2:
+						BuildingView.findAll();
+						break;
+					case 3:
+						BuildingView.findById(sc);
+						break;
+					case 4:
+						BuildingView.deleteById(sc);
+						break;
+					case 5:
+						BuildingView.updateById(sc);
+						break;
+					case 6:
+						BuildingView.search(sc);
+						break;
 
-				default:
-					flag = false;
-					break;
-				}
+					default:
+						flag = false;
+						break;
+					}
 			} catch (Exception e) {
 				e.printStackTrace();
 				System.out.println("Error: " + e.getMessage());
@@ -46,7 +52,6 @@ public class Main {
 		System.out.println("4. Delete building by ID. ");
 		System.out.println("5. Update building by ID.");
 		System.out.println("6. Search building.");
-		System.out.println("7. Search building.");
-		System.out.println("Your choice [1-7]: ");
+		System.out.println("Your choice [1-6]: ");
 	}
 }

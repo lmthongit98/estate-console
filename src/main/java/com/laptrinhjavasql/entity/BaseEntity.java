@@ -5,9 +5,8 @@ import com.laptrinhjavasql.anotation.Entity;
 
 @Entity
 public class BaseEntity {
-	
 	@Column(name = "id")
-	private Long id;
+	protected Long id;
 
 	public Long getId() {
 		return id;
@@ -16,5 +15,4 @@ public class BaseEntity {
 	public void setId(Long id) {
 		this.id = id;
 	}
-
 }

@@ -9,16 +9,19 @@ import com.laptrinhjavasql.anotation.Table;
 public class BuildingEntity extends BaseEntity {
 	
 	@Column(name = "name")
-	String name;
+	private String name;
 	
 	@Column(name = "floorarea")
-	Integer floorArea;
+	private Integer floorArea;
 	
 	@Column(name = "numberofbasement")
-	Integer numberOfBasement;
+	private Integer numberOfBasement;
+
+	@Column(name = "street")
+	private String street;
 	
 	@Column(name = "types")
-	String types;
+	private String types;
 
 	public String getName() {
 		return name;
@@ -52,4 +55,11 @@ public class BuildingEntity extends BaseEntity {
 		this.types = types;
 	}
 
+	public String getStreet() {
+		return street;
+	}
+
+	public void setStreet(String street) {
+		this.street = street;
+	}
 }

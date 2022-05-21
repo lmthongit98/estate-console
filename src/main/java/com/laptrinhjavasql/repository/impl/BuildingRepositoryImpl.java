@@ -11,10 +11,9 @@ import com.laptrinhjavasql.util.ValidateUtil;
 public class BuildingRepositoryImpl extends SimpleRepository<BuildingEntity> implements BuildingRepository {
 	
 	@Override
-	public List<BuildingEntity> searchBuilding(String name, Integer numberOfBasement, Integer floorArea,
+	public List<BuildingEntity> search(String name, Integer numberOfBasement, Integer floorArea,
 			List<String> types) {
-		StringBuilder finalQuery = new StringBuilder(
-				"SELECT distinct b.name, b.floorarea, b.numberofbasement, b.types from building b");
+		StringBuilder finalQuery = new StringBuilder("SELECT * FROM building b");
 		StringBuilder joinQuery = new StringBuilder();
 		StringBuilder whereQuery = new StringBuilder(SystemConstant.WHERE_ONE_EQUALS_ONE);
 

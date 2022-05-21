@@ -18,10 +18,9 @@ public class BuildingController {
 	public List<BuildingModel> findAll() {
 		return service.findAll();
 	}
-	
 
-	public List<BuildingModel> searchBuilding(String name, int numberOfBasement, int floorArea, List<String> types) {
-		return service.searchBuilding(name, numberOfBasement, floorArea, types);
+	public List<BuildingModel> findByCondition(String name, int numberOfBasement, int floorArea, List<String> types) {
+		return service.findByCondition(name, numberOfBasement, floorArea, types);
 	}
 	
 	public BuildingModel findById(Long id) {
@@ -34,5 +33,9 @@ public class BuildingController {
 
 	public void delete(Long id) {
 		service.delete(id);
+	}
+
+	public void update(BuildingEntity buildingEntity) {
+		service.update(buildingEntity);
 	}
 }

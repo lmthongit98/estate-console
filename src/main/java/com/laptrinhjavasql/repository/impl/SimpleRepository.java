@@ -109,10 +109,12 @@ public class SimpleRepository<T> implements JpaRepository<T> {
 		return null;
 	}
 
-
 	@Override
 	public void delete(Long id) {
 		String tableName = getTableName();
+		if (tableName == null) {
+			return;
+		}
 		Connection conn = null;
 		Statement stmt = null;
 		try {
@@ -120,10 +122,60 @@ public class SimpleRepository<T> implements JpaRepository<T> {
 			String sql = "DELETE FROM " + tableName + "  WHERE id = " + id;
 			stmt = conn.createStatement();
 			stmt.executeUpdate(sql);
-		} catch (SQLException e) {
+		} catch (SQLException e) { 
 			e.printStackTrace();
 		} finally {
 			closeConnection(conn, stmt, null);
+		}
+	}
+
+	@Override
+	public void update(Object object) {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		try {
+			conn = ConnectionUtil.getConnection();
+			StringBuilder sql = createSqlUpdate();
+			pstmt = conn.prepareStatement(sql.toString());
+
+			Class<?> zClass = object.getClass();
+			Field[] fields = zClass.getDeclaredFields();
+			int paramIndex = 1;
+			for (Field field : fields) {
+				if(!field.isAnnotationPresent(Column.class))
+					continue;
+				field.setAccessible(true);
+				pstmt.setObject(paramIndex++, field.get(object));
+			}
+
+			//Scan parent's fields
+			Class<?> parentClass = tClass.getSuperclass();
+			Field[] parentFields = parentClass.getDeclaredFields();
+			Long id = null;
+			while(parentClass != null && parentClass.isAnnotationPresent(Entity.class)) {
+				for (Field field : parentFields) {
+					field.setAccessible(true);
+					if(!field.isAnnotationPresent(Column.class))
+						continue;
+					if(!field.getName().equals("id")) {
+						pstmt.setObject(paramIndex++, field.get(object));
+					} else {
+						id = (Long) field.get(object);
+					}
+				}
+				parentClass = parentClass.getSuperclass();
+			}
+			//set ID
+			if(id != null) {
+				pstmt.setObject(paramIndex, id);
+			}
+			pstmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		} finally {
+			closeConnection(conn, pstmt, null);
 		}
 	}
 
@@ -136,6 +188,9 @@ public class SimpleRepository<T> implements JpaRepository<T> {
 		try {
 			conn = ConnectionUtil.getConnection();
 			StringBuilder sql = createSqlInsert();
+			if(sql == null) {
+				return null;
+			}
 			pstmt = conn.prepareStatement(sql.toString(), Statement.RETURN_GENERATED_KEYS);
 
 			Class<?> zClass = object.getClass();
@@ -146,10 +201,10 @@ public class SimpleRepository<T> implements JpaRepository<T> {
 				pstmt.setObject(paramIndex++, field.get(object));
 			}
 
+			//Scan parent's fields
 			Class<?> parentClass = tClass.getSuperclass();
 			Field[] parentFields = parentClass.getDeclaredFields();
 			int paramParentIndex = fields.length + 1;
-
 			while(parentClass != null && parentClass.isAnnotationPresent(Entity.class)) {
 				for (Field field : parentFields) {
 					if(!field.isAnnotationPresent(Column.class) || field.getName().equals("id"))
@@ -200,9 +255,9 @@ public class SimpleRepository<T> implements JpaRepository<T> {
 			params.append("?");
 		}
 
+		//Scan parent's fields
 		Class<?> parentClass = tClass.getSuperclass();
 		Field[] parentFields = parentClass.getDeclaredFields();
-
 		while(parentClass != null && parentClass.isAnnotationPresent(Entity.class)) {
 			for (Field field : parentFields) {
 				if(!field.isAnnotationPresent(Column.class) || field.getName().equals("id"))
@@ -218,6 +273,41 @@ public class SimpleRepository<T> implements JpaRepository<T> {
 
 		StringBuilder result = new StringBuilder(
 				"INSERT INTO " + tableName + "(" + fields.toString() + ") VALUES(" + params.toString() + ")");
+
+		return result;
+	}
+
+	private StringBuilder createSqlUpdate() {
+		String tableName = getTableName();
+		if (tableName == null) {
+			return null;
+		}
+
+		StringBuilder fieldAndParams = new StringBuilder("");
+		for (Field field : tClass.getDeclaredFields()) {
+			if (!field.isAnnotationPresent(Column.class))
+				continue;
+			if (fieldAndParams.length() > 1) {
+				fieldAndParams.append(", ");
+			}
+			Column column = field.getAnnotation(Column.class);
+			fieldAndParams.append(column.name() + " = ?");
+		}
+
+		//Scan parent's fields
+		Class<?> parentClass = tClass.getSuperclass();
+		Field[] parentFields = parentClass.getDeclaredFields();
+		while(parentClass != null && parentClass.isAnnotationPresent(Entity.class)) {
+			for (Field field : parentFields) {
+				if (!field.isAnnotationPresent(Column.class) || field.getName().equals("id"))
+					continue;
+				Column column = field.getAnnotation(Column.class);
+				fieldAndParams.append(", " + column.name() + " = ?");
+			}
+			parentClass = parentClass.getSuperclass();
+		}
+		StringBuilder result = new StringBuilder(
+				"UPDATE " + tableName + " SET " + fieldAndParams + " WHERE id = ?");
 
 		return result;
 	}
