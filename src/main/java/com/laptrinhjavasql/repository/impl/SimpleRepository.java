@@ -127,7 +127,21 @@ public class SimpleRepository<T> implements JpaRepository<T> {
 				field.setAccessible(true);
 				pstmt.setObject(paramIndex++, field.get(object));
 			}
-			// chua xu ly parent
+
+			Class<?> parentClass = tClass.getSuperclass();
+			Field[] parentFields = parentClass.getDeclaredFields();
+			int paramParentIndex = fields.length + 1;
+
+			while(parentClass != null && parentClass.isAnnotationPresent(Entity.class)) {
+				for (Field field : parentFields) {
+					if(!field.isAnnotationPresent(Column.class) || field.getName().equals("id"))
+						continue;
+					field.setAccessible(true);
+					pstmt.setObject(paramParentIndex++, field.get(object));
+				}
+				parentClass = parentClass.getSuperclass();
+			}
+
 			int flag = pstmt.executeUpdate();
 			if (flag > 0) {
 				rs = pstmt.getGeneratedKeys();
@@ -159,16 +173,29 @@ public class SimpleRepository<T> implements JpaRepository<T> {
 		for (Field field : tClass.getDeclaredFields()) {
 			if (!field.isAnnotationPresent(Column.class))
 				continue;
-
 			if (fields.length() > 1) {
 				fields.append(", ");
 				params.append(", ");
 			}
-
 			Column column = field.getAnnotation(Column.class);
 			fields.append(column.name());
 			params.append("?");
+		}
 
+		Class<?> parentClass = tClass.getSuperclass();
+		Field[] parentFields = parentClass.getDeclaredFields();
+
+		while(parentClass != null && parentClass.isAnnotationPresent(Entity.class)) {
+			for (Field field : parentFields) {
+				if(!field.isAnnotationPresent(Column.class) || field.getName().equals("id"))
+					continue;
+				fields.append(", ");
+				params.append(", ");
+				Column column = field.getAnnotation(Column.class);
+				fields.append(column.name());
+				params.append("?");
+			}
+			parentClass = parentClass.getSuperclass();
 		}
 
 		StringBuilder result = new StringBuilder(
