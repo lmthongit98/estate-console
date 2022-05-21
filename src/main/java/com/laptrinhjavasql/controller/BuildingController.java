@@ -31,5 +31,8 @@ public class BuildingController {
 	public Long add(BuildingEntity buildingEntity) {
 		return service.add(buildingEntity);
 	}
-	
+
+	public void delete(Long id) {
+		service.delete(id);
+	}
 }

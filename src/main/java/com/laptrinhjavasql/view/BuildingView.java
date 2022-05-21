@@ -38,8 +38,7 @@ public class BuildingView {
 
 	public static void findById(Scanner sc) {
 		
-		System.out.println("Enter the buidling ID: ");
-
+		System.out.println("Enter the building ID: ");
 		Long id = Long.parseLong(sc.nextLine());
 		BuildingController controller = new BuildingController();
 
@@ -57,5 +56,11 @@ public class BuildingView {
 			System.out.println(building);
 		});
 
+	}
+
+	public static void deleteById(Scanner sc) {
+		System.out.println("Enter the building ID: ");
+		Long id = Long.parseLong(sc.nextLine());
+		controller.delete(id);
 	}
 }

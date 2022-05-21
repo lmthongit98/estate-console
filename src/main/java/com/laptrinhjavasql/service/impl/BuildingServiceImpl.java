@@ -59,4 +59,9 @@ public class BuildingServiceImpl implements BuildingService {
 		return buildingRepository.insert(buildingEntity);
 	}
 
+	@Override
+	public void delete(Long id) {
+		buildingRepository.delete(id);
+	}
+
 }

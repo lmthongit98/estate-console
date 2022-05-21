@@ -8,5 +8,5 @@ public interface JpaRepository<T> {
 	List<T> findByCondition(String sql);
 	Long insert(Object object);
 	// update
-	// delete
+	void delete(Long id);
 }

@@ -3,7 +3,7 @@ package com.laptrinhjavasql.repository.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.laptrinhjavasql.constant.SystemContant;
+import com.laptrinhjavasql.constant.SystemConstant;
 import com.laptrinhjavasql.entity.BuildingEntity;
 import com.laptrinhjavasql.repository.BuildingRepository;
 import com.laptrinhjavasql.util.ValidateUtil;
@@ -16,7 +16,7 @@ public class BuildingRepositoryImpl extends SimpleRepository<BuildingEntity> imp
 		StringBuilder finalQuery = new StringBuilder(
 				"SELECT distinct b.name, b.floorarea, b.numberofbasement, b.types from building b");
 		StringBuilder joinQuery = new StringBuilder();
-		StringBuilder whereQuery = new StringBuilder(SystemContant.WHERE_ONE_EQUALS_ONE);
+		StringBuilder whereQuery = new StringBuilder(SystemConstant.WHERE_ONE_EQUALS_ONE);
 
 		buildQueryWithoutJoin(name, numberOfBasement, floorArea, types, whereQuery);
 		finalQuery.append(joinQuery).append(whereQuery);

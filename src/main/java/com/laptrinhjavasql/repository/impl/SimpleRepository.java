@@ -109,6 +109,24 @@ public class SimpleRepository<T> implements JpaRepository<T> {
 		return null;
 	}
 
+
+	@Override
+	public void delete(Long id) {
+		String tableName = getTableName();
+		Connection conn = null;
+		Statement stmt = null;
+		try {
+			conn = ConnectionUtil.getConnection();
+			String sql = "DELETE FROM " + tableName + "  WHERE id = " + id;
+			stmt = conn.createStatement();
+			stmt.executeUpdate(sql);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			closeConnection(conn, stmt, null);
+		}
+	}
+
 	@Override
 	public Long insert(Object object) {
 		Connection conn = null;

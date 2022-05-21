@@ -10,4 +10,5 @@ public interface BuildingService {
 	List<BuildingModel> searchBuilding(String name, Integer numberOfBasement, Integer floorArea, List<String> types);
 	BuildingModel findById(Long id);
 	Long add(BuildingEntity buildingEntity);
+    void delete(Long id);
 }

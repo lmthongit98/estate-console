@@ -23,6 +23,7 @@ public class Main {
 					BuildingView.findById(sc);
 					break;
 				case 4:
+					BuildingView.deleteById(sc);
 					break;
 
 				default:
@@ -42,7 +43,7 @@ public class Main {
 		System.out.println("1. Add building.");
 		System.out.println("2. List buildings.");
 		System.out.println("3. Find building by ID.");
-		System.out.println("4. Delete building. ");
+		System.out.println("4. Delete building by ID. ");
 		System.out.println("5. Update building by ID.");
 		System.out.println("6. Search building.");
 		System.out.println("7. Search building.");
