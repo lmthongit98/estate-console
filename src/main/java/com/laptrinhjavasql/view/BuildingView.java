@@ -7,12 +7,15 @@ import java.util.stream.Collectors;
 
 import com.laptrinhjavasql.builder.BuildingSearchBuilder;
 import com.laptrinhjavasql.controller.BuildingController;
+import com.laptrinhjavasql.controller.UserController;
 import com.laptrinhjavasql.entity.BuildingEntity;
 import com.laptrinhjavasql.model.BuildingModel;
+import com.laptrinhjavasql.model.UserModel;
 
 public class BuildingView {
 
 	private static BuildingController controller = new BuildingController();
+	private static UserController userController = new UserController();
 	
 	public static void add(Scanner sc) {
 		BuildingEntity buildingEntity = createBuildingEntity(sc);
@@ -138,4 +141,26 @@ public class BuildingView {
 	}
 
 
+	public static void assignBuildingToStaffs(Scanner sc) {
+		System.out.println("Nhập ID của tòa nhà: ");
+		Long buildingID = Long.parseLong(sc.nextLine());
+
+		List<UserModel> assignees = userController.findUsersByBuildingId(buildingID);
+		System.out.println("Danh sách nhân hiện tại đang quản lý tòa nhà: ");
+		assignees.forEach(System.out::println);
+
+		System.out.println("Cập nhật lại ID nhân viên quản lý: ");
+		String assigneesIdStr = sc.nextLine();
+		List<Long> updatedAssigneeIds = Arrays.stream(assigneesIdStr.split(","))
+				.map(String::trim)
+				.map(Long::parseLong)
+				.collect(Collectors.toList());
+		List<Long> oldAssigneeIds = assignees.stream().map(UserModel::getId).collect(Collectors.toList());
+
+		controller.assignBuildingToStaffs(updatedAssigneeIds, oldAssigneeIds, buildingID);
+
+		List<UserModel> updatedAssignees = userController.findUsersByBuildingId(buildingID);
+		System.out.println("Danh sách nhân nhiên mới cập nhật: ");
+		updatedAssignees.forEach(System.out::println);
+	}
 }

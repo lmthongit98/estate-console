@@ -1,24 +1,29 @@
 package com.laptrinhjavasql.service.impl;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import com.laptrinhjavasql.builder.BuildingSearchBuilder;
 import com.laptrinhjavasql.converter.BuildingConverter;
+import com.laptrinhjavasql.entity.AssignmentBuildingEntity;
 import com.laptrinhjavasql.entity.BuildingEntity;
 import com.laptrinhjavasql.model.BuildingModel;
+import com.laptrinhjavasql.repository.AssignmentBuildingRepository;
 import com.laptrinhjavasql.repository.BuildingRepository;
+import com.laptrinhjavasql.repository.impl.AssignmentBuildingRepositoryImpl;
 import com.laptrinhjavasql.repository.impl.BuildingRepositoryImpl;
 import com.laptrinhjavasql.service.BuildingService;
 
 public class BuildingServiceImpl implements BuildingService {
 	
 	private BuildingRepository buildingRepository;
-	
+	private AssignmentBuildingRepository assignmentBuildingRepository;
 	private BuildingConverter converter;
 	
 	public BuildingServiceImpl() {
 		buildingRepository = new BuildingRepositoryImpl();
+		assignmentBuildingRepository = new AssignmentBuildingRepositoryImpl();
 		converter = new BuildingConverter();
 	}
 	
@@ -69,5 +74,33 @@ public class BuildingServiceImpl implements BuildingService {
 	public void update(BuildingEntity buildingEntity) {
 		buildingRepository.update(buildingEntity);
 	}
+
+	@Override
+	public void assignBuildingToStaffs(List<Long> updatedAssigneeIds, List<Long> oldAssigneeIds, Long buildingId) {
+
+		List<Long> staffIdsToDelete =  findItemsOfSourceButNotInTarget(oldAssigneeIds, updatedAssigneeIds);
+		List<Long> staffIdsToAdd = findItemsOfSourceButNotInTarget(updatedAssigneeIds, oldAssigneeIds);
+
+		staffIdsToDelete.forEach(id -> {
+			Long assignedId = assignmentBuildingRepository.findAssignedId(id, buildingId);
+			assignmentBuildingRepository.delete(assignedId);
+		});
+
+		staffIdsToAdd.forEach(id -> {
+			assignmentBuildingRepository.insert(new AssignmentBuildingEntity(id, buildingId));
+		});
+	}
+
+	private List<Long> findItemsOfSourceButNotInTarget(List<Long> source, List<Long> target) {
+		List<Long> result = new LinkedList<>();
+		source.forEach(srcId -> {
+			Long id = target.stream().filter(targetId -> targetId == srcId).findAny().orElse(null);
+			if(id == null) {
+				result.add(srcId);
+			}
+		});
+		return  result;
+	}
+
 
 }

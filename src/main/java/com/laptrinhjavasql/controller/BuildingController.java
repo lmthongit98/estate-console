@@ -39,4 +39,8 @@ public class BuildingController {
 	public void update(BuildingEntity buildingEntity) {
 		service.update(buildingEntity);
 	}
+
+    public void assignBuildingToStaffs(List<Long> updatedAssigneeIds, List<Long> oldAssigneeIds, Long buildingID) {
+		service.assignBuildingToStaffs(updatedAssigneeIds, oldAssigneeIds, buildingID);
+    }
 }

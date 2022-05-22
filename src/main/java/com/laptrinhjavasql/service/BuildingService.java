@@ -13,4 +13,5 @@ public interface BuildingService {
 	Long add(BuildingEntity buildingEntity);
     void delete(Long id);
 	void update(BuildingEntity buildingEntity);
+    void assignBuildingToStaffs(List<Long> updatedAssigneeIds, List<Long> oldAssigneeIds, Long buildingId);
 }
