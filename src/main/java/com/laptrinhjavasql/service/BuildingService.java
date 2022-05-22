@@ -2,12 +2,13 @@ package com.laptrinhjavasql.service;
 
 import java.util.List;
 
+import com.laptrinhjavasql.builder.BuildingSearchBuilder;
 import com.laptrinhjavasql.entity.BuildingEntity;
 import com.laptrinhjavasql.model.BuildingModel;
 
 public interface BuildingService {
 	List<BuildingModel> findAll();
-	List<BuildingModel> findByCondition(String name, Integer numberOfBasement, Integer floorArea, List<String> types);
+	List<BuildingModel> findByCondition(BuildingSearchBuilder builder);
 	BuildingModel findById(Long id);
 	Long add(BuildingEntity buildingEntity);
     void delete(Long id);

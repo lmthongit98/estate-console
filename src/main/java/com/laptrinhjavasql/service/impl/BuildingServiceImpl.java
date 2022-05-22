@@ -3,6 +3,7 @@ package com.laptrinhjavasql.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.laptrinhjavasql.builder.BuildingSearchBuilder;
 import com.laptrinhjavasql.converter.BuildingConverter;
 import com.laptrinhjavasql.entity.BuildingEntity;
 import com.laptrinhjavasql.model.BuildingModel;
@@ -36,8 +37,8 @@ public class BuildingServiceImpl implements BuildingService {
 
 
 	@Override
-	public List<BuildingModel> findByCondition(String name, Integer numberOfBasemnet, Integer floorArea, List<String> types) {
-		List<BuildingEntity> entities = buildingRepository.search(name, numberOfBasemnet, floorArea, types);
+	public List<BuildingModel> findByCondition(BuildingSearchBuilder builder) {
+		List<BuildingEntity> entities = buildingRepository.search(builder);
 		List<BuildingModel> models = new ArrayList<BuildingModel>();
 		
 		entities.forEach(entity -> {

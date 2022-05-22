@@ -2,8 +2,9 @@ package com.laptrinhjavasql.repository;
 
 import java.util.List;
 
+import com.laptrinhjavasql.builder.BuildingSearchBuilder;
 import com.laptrinhjavasql.entity.BuildingEntity;
 
 public interface BuildingRepository extends JpaRepository<BuildingEntity> {
-	List<BuildingEntity> search(String name, Integer numberOfBasement, Integer floorArea, List<String> types);
+	List<BuildingEntity> search(BuildingSearchBuilder builder);
 }

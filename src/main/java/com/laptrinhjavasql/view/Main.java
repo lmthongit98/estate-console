@@ -14,22 +14,19 @@ public class Main {
 				functionID = Integer.parseInt(sc.nextLine());
 				switch (functionID) {
 					case 1:
-						BuildingView.add(sc);
-						break;
-					case 2:
 						BuildingView.findAll();
 						break;
+					case 2:
+						BuildingView.search(sc);
+						break;
 					case 3:
-						BuildingView.findById(sc);
+						BuildingView.add(sc);
 						break;
 					case 4:
 						BuildingView.deleteById(sc);
 						break;
 					case 5:
-						BuildingView.updateById(sc);
-						break;
 					case 6:
-						BuildingView.search(sc);
 						break;
 
 					default:
@@ -45,13 +42,12 @@ public class Main {
 	}
 
 	public static void showMenu() {
-		System.out.println("================ BOOK MANAGER ================");
-		System.out.println("1. Add building.");
-		System.out.println("2. List buildings.");
-		System.out.println("3. Find building by ID.");
-		System.out.println("4. Delete building by ID. ");
-		System.out.println("5. Update building by ID.");
-		System.out.println("6. Search building.");
-		System.out.println("Your choice [1-6]: ");
+		System.out.println("================ BUILDING MANAGER ================");
+		System.out.println("1. Hiển thị danh sách tòa nhà.");
+		System.out.println("2. Tìm kiếm tòa nhà.");
+		System.out.println("3. Thêm tòa nhà. ");
+		System.out.println("4. Xóa tòa nhà.");
+
+		System.out.println("Nhập lựa chọn của bạn [1-4]: ");
 	}
 }

@@ -2,6 +2,7 @@ package com.laptrinhjavasql.controller;
 
 import java.util.List;
 
+import com.laptrinhjavasql.builder.BuildingSearchBuilder;
 import com.laptrinhjavasql.entity.BuildingEntity;
 import com.laptrinhjavasql.model.BuildingModel;
 import com.laptrinhjavasql.service.BuildingService;
@@ -19,8 +20,8 @@ public class BuildingController {
 		return service.findAll();
 	}
 
-	public List<BuildingModel> findByCondition(String name, int numberOfBasement, int floorArea, List<String> types) {
-		return service.findByCondition(name, numberOfBasement, floorArea, types);
+	public List<BuildingModel> findByCondition(BuildingSearchBuilder builder) {
+		return service.findByCondition(builder);
 	}
 	
 	public BuildingModel findById(Long id) {
