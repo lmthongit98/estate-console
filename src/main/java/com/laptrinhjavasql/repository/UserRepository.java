@@ -1,7 +1,9 @@
 package com.laptrinhjavasql.repository;
 
-import com.laptrinhjavasql.model.UserModel;
+import com.laptrinhjavasql.entity.UserEntity;
 
-public interface UserRepository extends JpaRepository<UserModel> {
+import java.util.List;
 
+public interface UserRepository extends JpaRepository<UserEntity> {
+    List<UserEntity> findUsersByBuildingId(Long buildingID);
 }

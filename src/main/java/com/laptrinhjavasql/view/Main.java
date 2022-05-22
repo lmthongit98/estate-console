@@ -26,6 +26,7 @@ public class Main {
 						BuildingView.deleteById(sc);
 						break;
 					case 5:
+						UserView.showStaffsAssignedToBuilding(sc);
 					case 6:
 						break;
 
@@ -47,6 +48,7 @@ public class Main {
 		System.out.println("2. Tìm kiếm tòa nhà.");
 		System.out.println("3. Thêm tòa nhà. ");
 		System.out.println("4. Xóa tòa nhà.");
+		System.out.println("5. Hiển thị nhân viên quản lý của tòa nhà.");
 
 		System.out.println("Nhập lựa chọn của bạn [1-4]: ");
 	}
