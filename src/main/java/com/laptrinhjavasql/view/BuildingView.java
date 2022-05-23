@@ -149,7 +149,7 @@ public class BuildingView {
 		System.out.println("Danh sách nhân hiện tại đang quản lý tòa nhà: ");
 		assignees.forEach(System.out::println);
 
-		System.out.println("Cập nhật lại ID nhân viên quản lý: ");
+		System.out.println("Cập nhật lại ID nhân viên quản lý (vd: 1, 2, 3): ");
 		String assigneesIdStr = sc.nextLine();
 		List<Long> updatedAssigneeIds = Arrays.stream(assigneesIdStr.split(","))
 				.map(String::trim)

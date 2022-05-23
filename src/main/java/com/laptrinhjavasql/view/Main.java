@@ -20,14 +20,6 @@ public class Main {
 						BuildingView.search(sc);
 						break;
 					case 3:
-						BuildingView.add(sc);
-						break;
-					case 4:
-						BuildingView.deleteById(sc);
-						break;
-					case 5:
-						UserView.showStaffsAssignedToBuilding(sc);
-					case 6:
 						BuildingView.assignBuildingToStaffs(sc);
 						break;
 					case 0:
@@ -52,10 +44,7 @@ public class Main {
 		System.out.println("================ ỨNG DỤNG QUẢN LÝ VĂN PHÒNG CHO THUÊ ================");
 		System.out.println("1. Hiển thị danh sách tòa nhà.");
 		System.out.println("2. Tìm kiếm tòa nhà.");
-		System.out.println("3. Thêm tòa nhà. ");
-		System.out.println("4. Xóa tòa nhà.");
-		System.out.println("5. Hiển thị nhân viên quản lý của tòa nhà.");
-		System.out.println("6. Giao tòa nhà cho nhân viên quản lý.");
+		System.out.println("3. Giao tòa nhà cho nhân viên quản lý.");
 		System.out.println("0. Thoát.");
 		System.out.println("Nhập lựa chọn của bạn [1-4]: ");
 	}
