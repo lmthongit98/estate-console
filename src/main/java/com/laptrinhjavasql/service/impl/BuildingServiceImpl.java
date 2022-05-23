@@ -3,12 +3,14 @@ package com.laptrinhjavasql.service.impl;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 
 import com.laptrinhjavasql.builder.BuildingSearchBuilder;
 import com.laptrinhjavasql.converter.BuildingConverter;
 import com.laptrinhjavasql.entity.AssignmentBuildingEntity;
 import com.laptrinhjavasql.entity.BuildingEntity;
 import com.laptrinhjavasql.model.BuildingModel;
+import com.laptrinhjavasql.model.BuildingSearchInput;
 import com.laptrinhjavasql.repository.AssignmentBuildingRepository;
 import com.laptrinhjavasql.repository.BuildingRepository;
 import com.laptrinhjavasql.repository.impl.AssignmentBuildingRepositoryImpl;
@@ -17,9 +19,9 @@ import com.laptrinhjavasql.service.BuildingService;
 
 public class BuildingServiceImpl implements BuildingService {
 	
-	private BuildingRepository buildingRepository;
-	private AssignmentBuildingRepository assignmentBuildingRepository;
-	private BuildingConverter converter;
+	private final BuildingRepository buildingRepository;
+	private final AssignmentBuildingRepository assignmentBuildingRepository;
+	private final BuildingConverter converter;
 	
 	public BuildingServiceImpl() {
 		buildingRepository = new BuildingRepositoryImpl();
@@ -30,28 +32,24 @@ public class BuildingServiceImpl implements BuildingService {
 	@Override
 	public List<BuildingModel> findAll() {
 		List<BuildingEntity> entities = buildingRepository.findAll();
-		List<BuildingModel> models = new ArrayList<BuildingModel>();
-		
-		entities.forEach(entity -> {
-			BuildingModel model = converter.covertToModelFromEntity(entity);
-			models.add(model);
-		});
-		
-		return models;
+		return convertToModelsFromEntities(entities);
 	}
 
 
 	@Override
-	public List<BuildingModel> findByCondition(BuildingSearchBuilder builder) {
+	public List<BuildingModel> findByCondition(BuildingSearchInput buildingSearchInput) {
+        BuildingSearchBuilder builder = new BuildingSearchBuilder.Builder()
+                .setName(buildingSearchInput.getName())
+                .setStreet(buildingSearchInput.getStreet())
+                .setStaffId(buildingSearchInput.getStaffId())
+                .setNumberOfBasement(buildingSearchInput.getNumberOfBasement())
+                .setBuildingArea(buildingSearchInput.getFloorArea())
+                .setBuildingTypes(buildingSearchInput.getBuildingTypes())
+                .setManagerName(buildingSearchInput.getManagerName())
+                .build();
+
 		List<BuildingEntity> entities = buildingRepository.search(builder);
-		List<BuildingModel> models = new ArrayList<BuildingModel>();
-		
-		entities.forEach(entity -> {
-			BuildingModel model = converter.covertToModelFromEntity(entity);
-			models.add(model);
-		});
-		
-		return models;
+		return convertToModelsFromEntities(entities);
 	}
 
 	@Override
@@ -85,21 +83,30 @@ public class BuildingServiceImpl implements BuildingService {
 			Long assignedId = assignmentBuildingRepository.findAssignedId(id, buildingId);
 			assignmentBuildingRepository.delete(assignedId);
 		});
-
-		staffIdsToAdd.forEach(id -> {
-			assignmentBuildingRepository.insert(new AssignmentBuildingEntity(id, buildingId));
-		});
+		staffIdsToAdd.forEach(id -> assignmentBuildingRepository.insert(new AssignmentBuildingEntity(id, buildingId)));
 	}
 
 	private List<Long> findItemsOfSourceButNotInTarget(List<Long> source, List<Long> target) {
 		List<Long> result = new LinkedList<>();
 		source.forEach(srcId -> {
-			Long id = target.stream().filter(targetId -> targetId == srcId).findAny().orElse(null);
+			Long id = target.stream().filter(targetId -> Objects.equals(targetId, srcId)).findAny().orElse(null);
 			if(id == null) {
 				result.add(srcId);
 			}
 		});
 		return  result;
+	}
+
+	private List<BuildingModel> convertToModelsFromEntities(List<BuildingEntity> buildingEntities) {
+		if(buildingEntities == null) {
+			return null;
+		}
+		List<BuildingModel> buildingModels = new ArrayList<>();
+		buildingEntities.forEach(buildingEntity -> {
+			BuildingModel buildingModel = converter.covertToModelFromEntity(buildingEntity);
+			buildingModels.add(buildingModel);
+		});
+		return buildingModels;
 	}
 
 

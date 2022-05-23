@@ -5,25 +5,16 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
-import com.laptrinhjavasql.builder.BuildingSearchBuilder;
 import com.laptrinhjavasql.controller.BuildingController;
 import com.laptrinhjavasql.controller.UserController;
-import com.laptrinhjavasql.entity.BuildingEntity;
 import com.laptrinhjavasql.model.BuildingModel;
+import com.laptrinhjavasql.model.BuildingSearchInput;
 import com.laptrinhjavasql.model.UserModel;
 
 public class BuildingView {
 
-	private static BuildingController controller = new BuildingController();
-	private static UserController userController = new UserController();
-	
-	public static void add(Scanner sc) {
-		BuildingEntity buildingEntity = createBuildingEntity(sc);
-		Long id = controller.add(buildingEntity);
-		if(id != null) {
-			System.out.println("Added building with id = " + id);
-		}
-	}
+	private static final BuildingController controller = new BuildingController();
+	private static final UserController userController = new UserController();
 
 	public static void findAll() {
 		List<BuildingModel> buildings = controller.findAll();
@@ -37,7 +28,14 @@ public class BuildingView {
 	}
 
 	public static void search(Scanner sc) {
-		System.out.println("(*)Enter the search values. Press enter to skip search field.");
+		BuildingSearchInput buildingSearchInput = initSearchParams(sc);
+
+		List<BuildingModel> results = controller.findByCondition(buildingSearchInput);
+		showBuildingList(results);
+	}
+
+	public static BuildingSearchInput initSearchParams(Scanner sc) {
+		System.out.println("(*)Nhập thông tin mà bạn muốn tìm kiếm hoặc enter để bỏ qua.");
 		System.out.println("-------------------------------------------------------------");
 
 		System.out.println("Tên tòa nhà: ");
@@ -64,42 +62,19 @@ public class BuildingView {
 		List<String> types  = null;
 		if(type != null && !type.equals("")) {
 			types = Arrays.asList(type.split(","));
-			types = types.stream().map(t -> t.trim()).collect(Collectors.toList());
+			types = types.stream().map(String::trim).collect(Collectors.toList());
 		}
 
-		BuildingSearchBuilder builder = new BuildingSearchBuilder.Builder()
-				.setName(name)
-				.setStreet(street)
-				.setStaffId(staffId)
-				.setNumberOfBasement(numberOfBasement)
-				.setBuildingArea(floorArea)
-				.setBuildingTypes(types)
-				.setManagerName(manager)
-				.build();
+		BuildingSearchInput buildingSearchInput = new BuildingSearchInput();
+		buildingSearchInput.setName(name);
+		buildingSearchInput.setStreet(street);
+		buildingSearchInput.setStaffId(staffId);
+		buildingSearchInput.setNumberOfBasement(numberOfBasement);
+		buildingSearchInput.setManagerName(manager);
+		buildingSearchInput.setFloorArea(floorArea);
+		buildingSearchInput.setBuildingTypes(types);
 
-		List<BuildingModel> results = controller.findByCondition(builder);
-		showBuildingList(results);
-	}
-
-	private static BuildingEntity createBuildingEntity(Scanner sc) {
-		BuildingEntity buildingEntity = new BuildingEntity();
-		System.out.println("Tên tòa nhà: ");
-		String name = validateAndGetValue(sc.nextLine(), String.class);
-
-		System.out.println("Số tầng hầm: ");
-		Integer numberOfBasement = validateAndGetValue(sc.nextLine(), Integer.class);
-
-		System.out.println("Nhập diện tích sàn: ");
-		Integer floorArea = validateAndGetValue(sc.nextLine(), Integer.class);
-
-		System.out.println("Nhập tên đường: ");
-		String street = validateAndGetValue(sc.nextLine(), String.class);
-
-		buildingEntity.setName(name);
-		buildingEntity.setFloorArea(floorArea);
-		buildingEntity.setNumberOfBasement(numberOfBasement);
-		buildingEntity.setStreet(street);
-		return buildingEntity;
+		return buildingSearchInput;
 	}
 
 	private static <T>  T validateAndGetValue(String value, Class<T> tClass) {
@@ -121,20 +96,20 @@ public class BuildingView {
 
 	public static void showBuildingList(List<BuildingModel> buildingModels){
 		System.out.format("+----------------------------------------------------------------RESULTS------------------------------------------------------------------------+%n");
-		String leftAlignFormat = "| %-5s | %-20s | %-35s | %-15s | %-18s | %-1s %-10s | %-1s %-12s |%n";
+		String leftAlignFormat = "| %-5s | %-20s | %-35s | %-15s | %-18s | %-14s | %-16s |%n";
 		System.out.format("+-------+----------------------+-------------------------------------+-----------------+--------------------+----------------+------------------+%n");
 		System.out.format("| Mã    |     Tên tòa nhà      |               Địa chỉ               |    Quản lý      |     Số tầng hầm    | Diện tích sàn  |     Giá thuê     |%n");
 		System.out.format("+-------+----------------------+-------------------------------------+-----------------+--------------------+----------------+------------------+%n");
-		for (int i = 0; i < buildingModels.size(); i++) {
+		for (BuildingModel buildingModel : buildingModels) {
 
 			System.out.format(leftAlignFormat,
-					displayValue(buildingModels.get(i).getId()),
-					displayValue(buildingModels.get(i).getName()),
-					displayValue(buildingModels.get(i).getAddress()),
-					displayValue(buildingModels.get(i).getManagerName()),
-					displayValue(buildingModels.get(i).getNumberOfBasement()),
-					displayValue(buildingModels.get(i).getFloorArea()), "$",
-					displayValue(buildingModels.get(i).getRentPrice()), "$"
+					displayValue(buildingModel.getId()),
+					displayValue(buildingModel.getName()),
+					displayValue(buildingModel.getAddress()),
+					displayValue(buildingModel.getManagerName()),
+					displayValue(buildingModel.getNumberOfBasement()),
+					displayValue(buildingModel.getFloorArea() + "$"),
+					displayValue(buildingModel.getRentPrice() + "$")
 			);
 		}
 		System.out.format("+-------+----------------------+-------------------------------------+-----------------+--------------------+----------------+------------------+%n");

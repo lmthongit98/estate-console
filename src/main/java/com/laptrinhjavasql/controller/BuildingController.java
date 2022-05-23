@@ -5,12 +5,13 @@ import java.util.List;
 import com.laptrinhjavasql.builder.BuildingSearchBuilder;
 import com.laptrinhjavasql.entity.BuildingEntity;
 import com.laptrinhjavasql.model.BuildingModel;
+import com.laptrinhjavasql.model.BuildingSearchInput;
 import com.laptrinhjavasql.service.BuildingService;
 import com.laptrinhjavasql.service.impl.BuildingServiceImpl;
 
 public class BuildingController {
 	
-	private BuildingService service;
+	private final BuildingService service;
 	
 	public BuildingController() {
 		service = new BuildingServiceImpl();
@@ -20,8 +21,8 @@ public class BuildingController {
 		return service.findAll();
 	}
 
-	public List<BuildingModel> findByCondition(BuildingSearchBuilder builder) {
-		return service.findByCondition(builder);
+	public List<BuildingModel> findByCondition(BuildingSearchInput buildingSearchInput) {
+		return service.findByCondition(buildingSearchInput);
 	}
 	
 	public BuildingModel findById(Long id) {
