@@ -28,51 +28,20 @@ public class BuildingView {
 	}
 
 	public static void search(Scanner sc) {
-		BuildingSearchInput buildingSearchInput = initSearchParams(sc);
+		BuildingSearchInput buildingSearchInput = initSearchParams();
 
 		List<BuildingModel> results = controller.findByCondition(buildingSearchInput);
 		showBuildingList(results);
 	}
 
-	public static BuildingSearchInput initSearchParams(Scanner sc) {
-		System.out.println("(*)Nhập thông tin mà bạn muốn tìm kiếm hoặc enter để bỏ qua.");
-		System.out.println("-------------------------------------------------------------");
-
-		System.out.println("Tên tòa nhà: ");
-		String name = validateAndGetValue(sc.nextLine(), String.class);
-
-		System.out.println("Tên đường: ");
-		String street = validateAndGetValue(sc.nextLine(), String.class);
-
-		System.out.println("Mã nhân viên quản lý tòa nhà: ");
-		Long staffId = validateAndGetValue(sc.nextLine(), Long.class);
-
-		System.out.println("Số tầng hầm: ");
-		Integer numberOfBasement = validateAndGetValue(sc.nextLine(), Integer.class);
-
-		System.out.println("Quản lý: ");
-		String manager = validateAndGetValue(sc.nextLine(), String.class);
-
-		System.out.println("Diện tích sàn: ");
-		Integer floorArea = validateAndGetValue(sc.nextLine(), Integer.class);
-
-		System.out.println("Loại tòa nhà (ví dụ: tang-tret, nguyen-can): ");
-		String type = validateAndGetValue(sc.nextLine(), String.class);
-
-		List<String> types  = null;
-		if(type != null && !type.equals("")) {
-			types = Arrays.asList(type.split(","));
-			types = types.stream().map(String::trim).collect(Collectors.toList());
-		}
-
+	public static BuildingSearchInput initSearchParams() {
 		BuildingSearchInput buildingSearchInput = new BuildingSearchInput();
-		buildingSearchInput.setName(name);
-		buildingSearchInput.setStreet(street);
-		buildingSearchInput.setStaffId(staffId);
-		buildingSearchInput.setNumberOfBasement(numberOfBasement);
-		buildingSearchInput.setManagerName(manager);
-		buildingSearchInput.setFloorArea(floorArea);
-		buildingSearchInput.setBuildingTypes(types);
+
+		buildingSearchInput.setName("tower");
+		buildingSearchInput.setStreet(null);
+		buildingSearchInput.setNumberOfBasement(null);
+		// etc
+		//buildingSearchInput.setBuildingTypes(Arrays.asList("type1", "type2"));
 
 		return buildingSearchInput;
 	}

@@ -3,11 +3,13 @@ package com.laptrinhjavasql.repository.impl;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import com.laptrinhjavasql.builder.BuildingSearchBuilder;
 import com.laptrinhjavasql.constant.SystemConstant;
 import com.laptrinhjavasql.entity.BuildingEntity;
+import com.laptrinhjavasql.enums.SpecialSearchParams;
 import com.laptrinhjavasql.repository.BuildingRepository;
 import com.laptrinhjavasql.util.ValidateUtil;
 
@@ -19,6 +21,7 @@ public class BuildingRepositoryImpl extends SimpleRepository<BuildingEntity> imp
 		sql.append("SELECT b.id, b.name, b.district_id,")
 				.append(" b.street, b.ward, b.numberofbasement, b.floorarea, b.rentprice, b.managername, b.managerphone")
 				.append(" FROM building b");
+
 		buildJoinQuery(builder, sql);
 		sql.append(" " + SystemConstant.WHERE_ONE_EQUALS_ONE);
 		buildWhereClausePart1(builder, sql);
@@ -37,7 +40,7 @@ public class BuildingRepositoryImpl extends SimpleRepository<BuildingEntity> imp
 			query.append(" INNER JOIN user ON assignment_building.staff_id = user.id");
 		}
 
-		if(builder.getBuildingTypes() != null && builder.getBuildingTypes().size() > 0) {
+		if(builder.getBuildingTypes() != null && !builder.getBuildingTypes().isEmpty()) { // isEmpty instead of checking size()
 			query.append(" INNER JOIN building_renttype ON b.id = building_renttype.building_id")
 					.append(" INNER JOIN renttype ON building_renttype.renttype_id = renttype.id");
 		}
@@ -48,30 +51,48 @@ public class BuildingRepositoryImpl extends SimpleRepository<BuildingEntity> imp
 
 	}
 
+	private List<String> getSpecialSearchParams() {
+		List<String> params = new ArrayList<>();
+
+		for (SpecialSearchParams item : SpecialSearchParams.values()) {
+			params.add(item.getValue());
+		}
+
+		return params;
+	}
+
 	private void buildWhereClausePart1(BuildingSearchBuilder builder, StringBuilder query) {
 		Field[] fields = BuildingSearchBuilder.class.getDeclaredFields();
 		try {
 			for (Field field : fields) {
 				field.setAccessible(true);
+
 				String fieldName = field.getName();
-				if (fieldName.equals("district") || fieldName.equals("staffId") || fieldName.equals("buildingTypes")
-						|| fieldName.toLowerCase().startsWith("costrent") || fieldName.toLowerCase().startsWith("arearent")) {
+				Object objValue = field.get(builder);
+				String selectedColumn = SystemConstant.BUILDING_ALIAS + fieldName.toLowerCase();
+
+				if (getSpecialSearchParams().contains(fieldName)) {
 					continue;
 				}
 
-				Object objValue = field.get(builder);
 				if (objValue == null) {
 					continue;
 				}
 
-				if (field.getType().getName().equals("java.lang.String")) {
-					query.append(" AND b." + fieldName.toLowerCase() + " like '%" + objValue + "%'");
-				} else if (field.getType().getName().equals("java.lang.Integer")) {
-					query.append(" AND b." + fieldName.toLowerCase() + " = " + objValue);
+				if (field.getType().equals(String.class)) {
+					String convertedValue = "'%" + objValue + "%'";
+
+					query.append(SystemConstant.AND_STATEMENT)
+							.append(selectedColumn)
+							.append(SystemConstant.LIKE_OPERATOR)
+							.append(convertedValue);
+				} else if (field.getType().equals(Integer.class)) {
+					query.append(SystemConstant.AND_STATEMENT)
+							.append(selectedColumn)
+							.append(SystemConstant.EQUAL_OPERATOR)
+							.append(objValue);
 				}
-
 			}
-
 		} catch (IllegalAccessException e) {
 			e.printStackTrace();
 		}
