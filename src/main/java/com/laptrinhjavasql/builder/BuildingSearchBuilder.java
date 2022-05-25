@@ -6,11 +6,11 @@ import java.util.List;
 public class BuildingSearchBuilder {
     private String name;
     private String district;
-    private Integer floorarea;
+    private Integer floorArea;
     private String street;
     private String ward;
     private Integer numberOfBasement;
-    private List<String> buildingTypes = new ArrayList<String>();
+    private List<String> buildingTypes;
     private Integer costRentFrom;
     private Integer costRentTo;
     private Integer areaRentFrom;
@@ -26,8 +26,8 @@ public class BuildingSearchBuilder {
         return district;
     }
 
-    public Integer getFloorarea() {
-        return floorarea;
+    public Integer getFloorArea() {
+        return floorArea;
     }
 
     public Integer getNumberOfBasement() {
@@ -77,7 +77,7 @@ public class BuildingSearchBuilder {
     private BuildingSearchBuilder(Builder builder) {
         this.name = builder.name;
         this.district = builder.district;
-        this.floorarea = builder.floorarea;
+        this.floorArea = builder.floorArea;
         this.numberOfBasement = builder.numberOfBasement;
         this.street = builder.street;
         this.ward = builder.ward;
@@ -96,7 +96,7 @@ public class BuildingSearchBuilder {
         private String district;
         private String street;
         private String ward;
-        private Integer floorarea;
+        private Integer floorArea;
         private Integer numberOfBasement;
         private List<String> buildingTypes = new ArrayList<>();
         private Integer costRentFrom;
@@ -118,8 +118,8 @@ public class BuildingSearchBuilder {
             return this;
         }
 
-        public Builder setBuildingArea(Integer floorarea) {
-            this.floorarea = floorarea;
+        public Builder setBuildingArea(Integer floorArea) {
+            this.floorArea = floorArea;
             return this;
         }
 

@@ -17,7 +17,7 @@ public class Main {
 						BuildingView.findAll();
 						break;
 					case 2:
-						BuildingView.search(sc);
+						BuildingView.search();
 						break;
 					case 3:
 						BuildingView.assignBuildingToStaffs(sc);

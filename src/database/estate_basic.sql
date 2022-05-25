@@ -2,7 +2,7 @@ CREATE DATABASE  IF NOT EXISTS `javasql022022` /*!40100 DEFAULT CHARACTER SET ut
 USE `javasql022022`;
 -- MySQL dump 10.13  Distrib 8.0.28, for Win64 (x86_64)
 --
--- Host: localhost    Database: javaweb022022
+-- Host: localhost    Database: javasql022022
 -- ------------------------------------------------------
 -- Server version	8.0.13
 
@@ -30,7 +30,7 @@ CREATE TABLE `assignment_building` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`id`,`building_id`,`staff_id`),
   KEY `FK9j2n5bw1rgp110o03q7a6jsfb` (`building_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=11 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=MyISAM AUTO_INCREMENT=15 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -39,7 +39,7 @@ CREATE TABLE `assignment_building` (
 
 LOCK TABLES `assignment_building` WRITE;
 /*!40000 ALTER TABLE `assignment_building` DISABLE KEYS */;
-INSERT INTO `assignment_building` VALUES (2,2,2),(1,3,7),(2,3,8),(3,1,10);
+INSERT INTO `assignment_building` VALUES (2,2,2),(2,3,8),(1,1,12),(2,1,13),(1,2,14);
 /*!40000 ALTER TABLE `assignment_building` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -52,39 +52,39 @@ DROP TABLE IF EXISTS `building`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `building` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `createdby` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `createdby` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL,
   `createddate` datetime DEFAULT NULL,
-  `modifiedby` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `modifiedby` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL,
   `modifieddate` datetime DEFAULT NULL,
   `brokeragefee` int(11) DEFAULT NULL,
-  `carfee` varchar(255) COLLATE utf8_bin DEFAULT NULL,
-  `decorationtime` varchar(255) COLLATE utf8_bin DEFAULT NULL,
-  `deposit` varchar(255) COLLATE utf8_bin DEFAULT NULL,
-  `direction` varchar(255) COLLATE utf8_bin DEFAULT NULL,
-  `electricityfee` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `carfee` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL,
+  `decorationtime` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL,
+  `deposit` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL,
+  `direction` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL,
+  `electricityfee` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL,
   `floorarea` int(11) DEFAULT NULL,
-  `level` varchar(255) COLLATE utf8_bin DEFAULT NULL,
-  `linkofbuilding` varchar(255) COLLATE utf8_bin DEFAULT NULL,
-  `managername` varchar(255) COLLATE utf8_bin DEFAULT NULL,
-  `managerphone` varchar(255) COLLATE utf8_bin DEFAULT NULL,
-  `motorbikefee` varchar(255) COLLATE utf8_bin DEFAULT NULL,
-  `name` varchar(255) COLLATE utf8_bin DEFAULT NULL,
-  `note` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `level` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL,
+  `linkofbuilding` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL,
+  `managername` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL,
+  `managerphone` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL,
+  `motorbikefee` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL,
+  `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL,
+  `note` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL,
   `numberofbasement` int(11) DEFAULT NULL,
-  `overtimefee` varchar(255) COLLATE utf8_bin DEFAULT NULL,
-  `payment` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `overtimefee` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL,
+  `payment` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL,
   `rentprice` int(11) DEFAULT NULL,
-  `rentpricedescription` varchar(255) COLLATE utf8_bin DEFAULT NULL,
-  `renttime` varchar(255) COLLATE utf8_bin DEFAULT NULL,
-  `servicefee` varchar(255) COLLATE utf8_bin DEFAULT NULL,
-  `street` varchar(255) COLLATE utf8_bin DEFAULT NULL,
-  `structure` varchar(255) COLLATE utf8_bin DEFAULT NULL,
-  `ward` varchar(255) COLLATE utf8_bin DEFAULT NULL,
-  `waterfee` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `rentpricedescription` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL,
+  `renttime` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL,
+  `servicefee` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL,
+  `street` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL,
+  `structure` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL,
+  `ward` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL,
+  `waterfee` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL,
   `district_id` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `FK8lsralwnmpmlb745ek0gf3v00` (`district_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -93,7 +93,7 @@ CREATE TABLE `building` (
 
 LOCK TABLES `building` WRITE;
 /*!40000 ALTER TABLE `building` DISABLE KEYS */;
-INSERT INTO `building` VALUES (1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,200,NULL,NULL,'anh Thắng',NULL,NULL,'building towner',NULL,2,NULL,NULL,200,NULL,NULL,NULL,'hoang hoa tham',NULL,'phuong 13',NULL,1),(3,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,400,NULL,NULL,'chị Hòa',NULL,NULL,'Cao Thang building',NULL,4,NULL,NULL,300,NULL,NULL,NULL,'le hong phong',NULL,'phuong 10',NULL,1),(2,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,300,NULL,NULL,'chú Sơn',NULL,NULL,'TMA Building',NULL,3,NULL,NULL,100,NULL,NULL,NULL,'Lê Văn Sỹ',NULL,NULL,NULL,2),(5,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'Center Buidling',NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,2);
+INSERT INTO `building` VALUES (1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,200,NULL,NULL,'anh Thắng',NULL,NULL,'building towner',NULL,2,NULL,NULL,200,NULL,NULL,NULL,'hoàng hoa thám',NULL,'phường 13',NULL,1),(3,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,400,NULL,NULL,'chị Hòa',NULL,NULL,'Cao Thang building',NULL,4,NULL,NULL,300,NULL,NULL,NULL,'lê hồng phong',NULL,'phường 10',NULL,1),(2,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,300,NULL,NULL,'chú Sơn',NULL,NULL,'TMA Building',NULL,3,NULL,NULL,100,NULL,NULL,NULL,'lê văn sỹ',NULL,'phường 1',NULL,2),(5,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'anh Tùng',NULL,NULL,'Center Buidling',NULL,2,NULL,NULL,NULL,NULL,NULL,NULL,'',NULL,NULL,NULL,2),(6,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'cô Thảo',NULL,NULL,'Nam Cao Building',NULL,3,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL),(7,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,'Ninh Kiều Building',NULL,1,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL,NULL);
 /*!40000 ALTER TABLE `building` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -118,6 +118,7 @@ CREATE TABLE `building_renttype` (
 
 LOCK TABLES `building_renttype` WRITE;
 /*!40000 ALTER TABLE `building_renttype` DISABLE KEYS */;
+INSERT INTO `building_renttype` VALUES (1,1),(2,2),(2,3),(3,1),(5,1);
 /*!40000 ALTER TABLE `building_renttype` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -130,12 +131,12 @@ DROP TABLE IF EXISTS `district`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `district` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `createdby` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `createdby` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL,
   `createddate` datetime DEFAULT NULL,
-  `modifiedby` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `modifiedby` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL,
   `modifieddate` datetime DEFAULT NULL,
-  `code` varchar(255) COLLATE utf8_bin DEFAULT NULL,
-  `name` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `code` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL,
+  `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -159,15 +160,15 @@ DROP TABLE IF EXISTS `rentarea`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `rentarea` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `createdby` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `createdby` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL,
   `createddate` datetime DEFAULT NULL,
-  `modifiedby` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `modifiedby` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL,
   `modifieddate` datetime DEFAULT NULL,
-  `value` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `value` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL,
   `building_id` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `FK2h9n08cj3i1cmi1isfugohoic` (`building_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -176,7 +177,7 @@ CREATE TABLE `rentarea` (
 
 LOCK TABLES `rentarea` WRITE;
 /*!40000 ALTER TABLE `rentarea` DISABLE KEYS */;
-INSERT INTO `rentarea` VALUES (1,NULL,NULL,NULL,NULL,'200',1);
+INSERT INTO `rentarea` VALUES (1,NULL,NULL,NULL,NULL,'200',1),(2,NULL,NULL,NULL,NULL,'300',2),(3,NULL,NULL,NULL,NULL,'400',3),(4,NULL,NULL,NULL,NULL,'400',2),(5,NULL,NULL,NULL,NULL,'400',1),(6,NULL,NULL,NULL,NULL,'500',5);
 /*!40000 ALTER TABLE `rentarea` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -189,14 +190,14 @@ DROP TABLE IF EXISTS `renttype`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `renttype` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `createdby` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `createdby` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL,
   `createddate` datetime DEFAULT NULL,
-  `modifiedby` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `modifiedby` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL,
   `modifieddate` datetime DEFAULT NULL,
-  `code` varchar(255) COLLATE utf8_bin DEFAULT NULL,
-  `name` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `code` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL,
+  `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -205,6 +206,7 @@ CREATE TABLE `renttype` (
 
 LOCK TABLES `renttype` WRITE;
 /*!40000 ALTER TABLE `renttype` DISABLE KEYS */;
+INSERT INTO `renttype` VALUES (1,NULL,NULL,NULL,NULL,'tang-tret','tầng trệt'),(2,NULL,NULL,NULL,NULL,'nguyen-can','nguyên căn'),(3,NULL,NULL,NULL,NULL,'noi-that','nội thất');
 /*!40000 ALTER TABLE `renttype` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -217,12 +219,12 @@ DROP TABLE IF EXISTS `role`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `role` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `createdby` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `createdby` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL,
   `createddate` datetime DEFAULT NULL,
-  `modifiedby` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `modifiedby` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL,
   `modifieddate` datetime DEFAULT NULL,
-  `code` varchar(255) COLLATE utf8_bin NOT NULL,
-  `name` varchar(255) COLLATE utf8_bin NOT NULL,
+  `code` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
+  `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UK_c36say97xydpmgigg38qv5l2p` (`code`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
@@ -246,15 +248,15 @@ DROP TABLE IF EXISTS `user`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `user` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `createdby` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `createdby` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL,
   `createddate` datetime DEFAULT NULL,
-  `modifiedby` varchar(255) COLLATE utf8_bin DEFAULT NULL,
+  `modifiedby` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL,
   `modifieddate` datetime DEFAULT NULL,
-  `email` varchar(255) COLLATE utf8_bin DEFAULT NULL,
-  `fullname` varchar(255) COLLATE utf8_bin NOT NULL,
-  `password` varchar(255) COLLATE utf8_bin NOT NULL,
+  `email` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin DEFAULT NULL,
+  `fullname` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
+  `password` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
   `status` int(11) NOT NULL,
-  `username` varchar(255) COLLATE utf8_bin NOT NULL,
+  `username` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UK_sb8bbouer5wak8vyiiy4pf2bx` (`username`),
   UNIQUE KEY `UK_ob8kqyqqgmefl0aco34akdtpe` (`email`)
@@ -304,4 +306,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-05-23  8:00:32
+-- Dump completed on 2022-05-25 11:13:46

@@ -4,28 +4,35 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 import com.laptrinhjavasql.builder.BuildingSearchBuilder;
 import com.laptrinhjavasql.converter.BuildingConverter;
 import com.laptrinhjavasql.entity.AssignmentBuildingEntity;
 import com.laptrinhjavasql.entity.BuildingEntity;
+import com.laptrinhjavasql.entity.DistrictEntity;
+import com.laptrinhjavasql.entity.RentAreaEntity;
 import com.laptrinhjavasql.model.BuildingModel;
 import com.laptrinhjavasql.model.BuildingSearchInput;
-import com.laptrinhjavasql.repository.AssignmentBuildingRepository;
-import com.laptrinhjavasql.repository.BuildingRepository;
+import com.laptrinhjavasql.repository.*;
 import com.laptrinhjavasql.repository.impl.AssignmentBuildingRepositoryImpl;
 import com.laptrinhjavasql.repository.impl.BuildingRepositoryImpl;
+import com.laptrinhjavasql.repository.impl.RentAreaRepositoryImpl;
 import com.laptrinhjavasql.service.BuildingService;
 
 public class BuildingServiceImpl implements BuildingService {
 	
 	private final BuildingRepository buildingRepository;
 	private final AssignmentBuildingRepository assignmentBuildingRepository;
+	private final RentAreaRepository rentAreaRepository;
+	private final DistrictRepository districtRepository;
 	private final BuildingConverter converter;
-	
+
 	public BuildingServiceImpl() {
 		buildingRepository = new BuildingRepositoryImpl();
+		districtRepository = new DistrictRepositoryImpl();
 		assignmentBuildingRepository = new AssignmentBuildingRepositoryImpl();
+		rentAreaRepository = new RentAreaRepositoryImpl();
 		converter = new BuildingConverter();
 	}
 	
@@ -46,6 +53,10 @@ public class BuildingServiceImpl implements BuildingService {
                 .setBuildingArea(buildingSearchInput.getFloorArea())
                 .setBuildingTypes(buildingSearchInput.getBuildingTypes())
                 .setManagerName(buildingSearchInput.getManagerName())
+				.setAreaRentTo(buildingSearchInput.getAreaRentTo())
+				.setAreaRentFrom(buildingSearchInput.getAreaRentFrom())
+				.setCostRentFrom(buildingSearchInput.getCostRentFrom())
+				.setCostRentTo(buildingSearchInput.getCostRentTo())
                 .build();
 
 		List<BuildingEntity> entities = buildingRepository.search(builder);
@@ -104,6 +115,21 @@ public class BuildingServiceImpl implements BuildingService {
 		List<BuildingModel> buildingModels = new ArrayList<>();
 		buildingEntities.forEach(buildingEntity -> {
 			BuildingModel buildingModel = converter.covertToModelFromEntity(buildingEntity);
+
+			List<RentAreaEntity> rentAreaEntities = rentAreaRepository.findRentAreaByBuildingId(buildingEntity.getId());
+			if(rentAreaEntities != null && !rentAreaEntities.isEmpty()) {
+				String rentAreaStr = rentAreaEntities.stream()
+						.map(area -> area.getValue() + "")
+						.collect(Collectors.joining(", "));
+				buildingModel.setRentArea(rentAreaStr);
+			}
+
+			DistrictEntity districtEntity = districtRepository.findById(buildingEntity.getDistrictId());
+			buildingModel.setAddress(buildingEntity.getStreet() + ", " + buildingEntity.getWard());
+			if(districtEntity != null && !"".equals(districtEntity.getName())) {
+				buildingModel.setAddress(buildingModel.getAddress() + ", " + districtEntity.getName());
+			}
+
 			buildingModels.add(buildingModel);
 		});
 		return buildingModels;

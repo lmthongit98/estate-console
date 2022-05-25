@@ -9,6 +9,7 @@ public class BuildingModel {
 	private String managerName;
 	private String managerPhone;
 	private Integer rentPrice;
+	private String rentArea; // e.g: 100, 200, 300
 
 	public Long getId() {
 		return id;
@@ -74,6 +75,14 @@ public class BuildingModel {
 		this.address = address;
 	}
 
+	public String getRentArea() {
+		return rentArea;
+	}
+
+	public void setRentArea(String rentArea) {
+		this.rentArea = rentArea;
+	}
+
 	@Override
 	public String toString() {
 		return "BuildingModel{" +
@@ -85,6 +94,7 @@ public class BuildingModel {
 				", managerName='" + managerName + '\'' +
 				", managerPhone='" + managerPhone + '\'' +
 				", rentPrice=" + rentPrice +
+				", rentArea='" + rentArea + '\'' +
 				'}';
 	}
 }
